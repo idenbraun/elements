@@ -1,1165 +1,695 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ELEMENTS — Calisthenics Archive</title>
-  <meta name="description" content="Собирай калистенические элементы. Фиксируй прогресс. Строй свою коллекцию навыков.">
-  <meta name="theme-color" content="#000000">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="ELEMENTS">
-  <meta property="og:title" content="ELEMENTS — Calisthenics Archive">
-  <meta property="og:description" content="Тёмная коллекция калистенических навыков. Добавляй, прогрессируй, доказывай.">
-  <meta property="og:type" content="website">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
-  <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #000000;
-      --bg-elevated: #0a0a0a;
-      --border: #1a1a1a;
-      --border-hover: #333;
-      --text: #f0f0f0;
-      --text-dim: #666;
-      --text-muted: #444;
-      --success: #00ff66;
-      --warning: #ffaa00;
-      --danger: #ff2a2a;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ELEMENTS — Calisthenics Archive</title>
+<meta name="description" content="Собирай калистенические элементы. Фиксируй прогресс. Строй свою коллекцию навыков.">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ELEMENTS">
+<meta property="og:title" content="ELEMENTS — Calisthenics Archive">
+<meta property="og:description" content="Тёмная коллекция калистенических навыков. Добавляй, прогрессируй, доказывай.">
+<meta property="og:type" content="website">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000;
+    --text: #f2f2f2;
+    --dim: #7a7a7a;
+    --mute: #4a4a4a;
+    --faint: #262626;
+    --line: #161616;
+    --display: 'Anton', 'Impact', sans-serif;
+    --body: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { background: var(--bg); scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); line-height: 1.4; min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 150; opacity: .06;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: left; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* ---------- TOPBAR ---------- */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: calc(72px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) 32px 0;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(0,0,0,.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    transition: transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .topbar.hide { transform: translateY(-100%); }
+  .logo { font-family: var(--display); font-size: 20px; letter-spacing: .22em; }
+  .nav { display: flex; align-items: center; gap: 44px; font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; }
+  .nav a { color: var(--dim); transition: color .15s; }
+  .nav a:hover { color: var(--text); }
+  .top-prog { position: absolute; left: 0; bottom: 0; height: 1px; background: var(--text); width: 0; transition: width .6s cubic-bezier(.2,.8,.2,1); }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', system-ui, sans-serif;
-      min-height: 100vh;
-      line-height: 1.4;
-      -webkit-font-smoothing: antialiased;
-    }
+  /* ---------- HERO ---------- */
+  .hero { padding: calc(140px + env(safe-area-inset-top)) 0 40px; }
+  .hero-meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); margin-bottom: 28px; }
+  h1 { font-family: var(--display); font-weight: 400; line-height: .8; text-transform: uppercase; letter-spacing: -.01em; white-space: nowrap; }
+  h1 span { display: inline-block; font-size: clamp(60px, 21vw, 300px); }
+  .tagline { margin-top: 48px; max-width: 420px; color: var(--dim); font-size: 15px; line-height: 1.8; }
+  .stats { display: flex; flex-wrap: wrap; gap: 48px 110px; margin-top: 88px; }
+  .stat .k { font-family: var(--mono); font-size: 10px; letter-spacing: .22em; color: var(--dim); text-transform: uppercase; }
+  .stat .v { font-family: var(--display); font-size: clamp(54px, 7vw, 92px); margin-top: 14px; line-height: .9; }
+  .stat .v small { font-family: var(--mono); font-size: 13px; color: var(--mute); margin-left: 8px; letter-spacing: .1em; }
+  .rankbar { height: 2px; background: var(--faint); margin-top: 22px; overflow: hidden; }
+  .rankbar i { display: block; height: 100%; background: var(--text); width: 0; transition: width .6s cubic-bezier(.2,.8,.2,1); }
 
-    /* ========== HEADER ========== */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(0,0,0,0.94);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 20px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+  /* ---------- SECTION LABEL ---------- */
+  .label { display: flex; gap: 18px; align-items: baseline; font-family: var(--mono); font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--dim); margin: 150px 0 44px; scroll-margin-top: 90px; }
+  .label b { color: var(--text); font-weight: 400; }
 
-    .logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 26px;
-      letter-spacing: 3px;
-      color: var(--text);
-      text-decoration: none;
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-    }
-    .logo span {
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      color: var(--text-dim);
-    }
+  /* ---------- NEXT UP ---------- */
+  .next { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 56px 40px; }
+  .next-card { display: block; }
+  .next-card .n { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; color: var(--dim); text-transform: uppercase; }
+  .next-card .t { font-family: var(--display); font-size: clamp(36px, 4vw, 54px); text-transform: uppercase; line-height: 1; margin: 16px 0 22px; transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+  .next-card:hover .t { transform: translateX(10px); }
+  .empty { color: var(--dim); font-size: 14px; grid-column: 1/-1; }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+  /* ---------- CONTROLS ---------- */
+  .controls { display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px 30px; align-items: center; }
+  .chip { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; padding: 8px 0; color: var(--mute); border-bottom: 1.5px solid transparent; transition: color .15s; }
+  .chip:hover { color: var(--text); }
+  .chip.on { color: var(--text); border-bottom-color: var(--text); }
+  .sep { width: 18px; }
+  .search { position: relative; }
+  .search input { background: transparent; border: 0; border-bottom: 1.5px solid transparent; color: var(--text); font: inherit; font-size: 14px; padding: 8px 0 8px 26px; width: 240px; outline: none; border-radius: 0; transition: border-color .15s; }
+  .search input:focus { border-bottom-color: var(--mute); }
+  .search input::placeholder { color: var(--mute); }
+  .search::before { content: "⌕"; position: absolute; left: 0; top: 50%; transform: translateY(-50%); color: var(--mute); font-size: 16px; }
+  .count-line { font-family: var(--mono); font-size: 11px; color: var(--mute); letter-spacing: .14em; margin: 44px 0 20px; }
 
-    .stat-pill {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      color: var(--text-dim);
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-    .stat-pill strong { color: var(--text); }
+  /* ---------- LIST (стена элементов) ---------- */
+  .list { margin-bottom: 160px; border-top: 1px solid var(--line); }
+  .row {
+    display: grid; grid-template-columns: 64px minmax(0, 1fr) 180px 150px 130px 84px;
+    grid-template-areas: "idx name meta diff st end"; align-items: center; column-gap: 20px;
+    padding: 30px 0; border-bottom: 1px solid var(--line); cursor: pointer;
+  }
+  .r-idx { grid-area: idx; font-family: var(--mono); font-size: 11px; color: var(--mute); letter-spacing: .1em; }
+  .r-name { grid-area: name; font-family: var(--display); font-weight: 400; font-size: clamp(34px, 5.4vw, 72px); line-height: .95; text-transform: uppercase; }
+  .r-name button { color: var(--mute); display: inline-block; transition: color .2s, transform .3s cubic-bezier(.2,.8,.2,1); text-transform: inherit; }
+  .row.ready .r-name button { color: #8d8d8d; }
+  .row.owned .r-name button { color: var(--text); }
+  .row:hover .r-name button { color: var(--text); transform: translateX(14px); }
+  .r-meta { grid-area: meta; font-family: var(--mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+  .r-diff { grid-area: diff; }
+  .r-st { grid-area: st; font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
+  .row.ready .r-st { color: var(--text); display: inline-flex; align-items: center; gap: 8px; }
+  .row.ready .r-st::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--text); animation: pulse 1.6s infinite; }
+  .row.owned .r-st { color: var(--text); }
+  .row.owned .r-st::before { content: "■ "; font-size: 8px; vertical-align: 1px; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .2; } }
+  .r-end { grid-area: end; display: flex; justify-content: flex-end; }
+  .r-thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 12px; filter: grayscale(1) contrast(1.1); transition: filter .3s; }
+  .row:hover .r-thumb { filter: none; }
+  .r-add { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .16em; background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; transition: opacity .15s; white-space: nowrap; }
+  .r-add:hover { opacity: .8; }
 
-    .icon-btn {
-      width: 36px;
-      height: 36px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-dim);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s;
-    }
-    .icon-btn:hover { border-color: var(--border-hover); color: var(--text); }
-    .icon-btn svg { width: 18px; height: 18px; }
+  /* сложность: 10 делений */
+  .diff { display: inline-flex; align-items: center; gap: 12px; }
+  .ticks { display: inline-flex; gap: 3px; }
+  .ticks i { width: 3px; height: 15px; background: var(--faint); border-radius: 1px; display: block; }
+  .ticks i.f { background: var(--c, var(--text)); }
+  .dl { font-family: var(--mono); font-size: 11px; color: var(--dim); letter-spacing: .08em; }
 
-    /* ========== HERO / ONBOARD ========== */
-    .hero {
-      padding: 48px 20px 40px;
-      max-width: 1200px;
-      margin: 0 auto;
-      border-bottom: 1px solid var(--border);
-    }
-    .hero-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 12px;
-    }
-    .hero h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(52px, 11vw, 96px);
-      line-height: 0.9;
-      letter-spacing: 1px;
-      margin-bottom: 16px;
-    }
-    .hero p {
-      font-size: 15px;
-      color: var(--text-dim);
-      max-width: 420px;
-      line-height: 1.55;
-    }
+  /* кнопки: основная — белая таблетка, остальные — текст */
+  .actions { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; }
+  .btn { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; padding: 14px 0; color: var(--text); transition: opacity .15s; }
+  .btn:hover { opacity: .55; }
+  .btn.primary { background: var(--text); color: var(--bg); padding: 16px 30px; border-radius: 999px; text-align: center; }
+  .btn.primary:hover { opacity: .85; }
+  .btn.ghost { color: var(--dim); }
+  .btn:disabled { opacity: .3; pointer-events: none; }
 
-    /* ========== CONTROLS ========== */
-    .controls {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 24px 20px 16px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-    }
+  .empty-grid { padding: 110px 0; color: var(--dim); }
+  .empty-grid h3 { font-family: var(--display); font-weight: 400; font-size: 54px; color: var(--text); margin-bottom: 8px; }
 
-    .filters {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
+  footer { padding: 36px 0 calc(72px + env(safe-area-inset-bottom)); font-family: var(--mono); font-size: 11px; letter-spacing: .16em; color: var(--mute); text-transform: uppercase; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  footer button { color: var(--mute); font: inherit; letter-spacing: inherit; text-transform: uppercase; transition: color .15s; }
+  footer button:hover { color: var(--text); }
 
-    .filter-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-      font-family: inherit;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 9px 14px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .filter-btn:hover { border-color: var(--border-hover); color: var(--text); }
-    .filter-btn.active {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
-    }
+  /* ---------- MODAL (во весь экран) ---------- */
+  .overlay { position: fixed; inset: 0; background: var(--bg); z-index: 200; display: none; overflow-y: auto; overscroll-behavior: contain; }
+  .overlay.open { display: block; }
+  .sheet { max-width: 760px; margin: 0 auto; padding: calc(28px + env(safe-area-inset-top)) 32px calc(96px + env(safe-area-inset-bottom)); animation: up .3s cubic-bezier(.2,.8,.2,1); }
+  @keyframes up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .s-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 36px; }
+  .s-meta { font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); }
+  .s-close { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; color: var(--dim); padding: 8px 0 8px 12px; transition: color .15s; }
+  .s-close:hover { color: var(--text); }
+  .s-media { position: relative; width: 100%; aspect-ratio: 16/9; background: #0a0a0a; border-radius: 18px; overflow: hidden; }
+  .s-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--mute); font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }
+  .ph svg { width: 26px; height: 26px; opacity: .5; }
+  .s-title { font-family: var(--display); font-weight: 400; font-size: clamp(54px, 12vw, 104px); line-height: .92; text-transform: uppercase; margin: 44px 0 24px; }
+  .s-diff { display: flex; align-items: center; gap: 22px; margin-bottom: 36px; }
+  .s-diff b { font-family: var(--mono); font-size: 12px; letter-spacing: .2em; font-weight: 600; }
+  .s-desc { color: #b5b5b5; line-height: 1.9; font-size: 16px; max-width: 560px; }
+  .sec { margin-top: 72px; }
+  .sec h3 { font-family: var(--mono); font-weight: 400; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--dim); margin-bottom: 24px; }
+  .hint { font-size: 14px; color: var(--dim); line-height: 1.7; margin-bottom: 24px; max-width: 520px; }
+  .path { display: flex; flex-direction: column; gap: 28px; }
+  .path button { display: flex; justify-content: space-between; align-items: center; gap: 16px; width: 100%; transition: opacity .15s, transform .25s cubic-bezier(.2,.8,.2,1); }
+  .path button:hover { opacity: .6; transform: translateX(8px); }
+  .pn { font-family: var(--display); font-size: clamp(26px, 5vw, 36px); text-transform: uppercase; line-height: 1; }
+  .pr { display: flex; align-items: center; gap: 18px; }
+  .pr .dl { display: none; }
+  .ps { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; color: var(--mute); }
+  .ps.owned, .ps.ready { color: var(--text); }
+  .drop { display: block; padding: 18px 0; cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin-bottom: 10px; transition: color .15s; word-break: break-all; }
+  .drop::before { content: "+ "; }
+  .drop:hover { color: var(--text); }
+  .drop input { display: none; }
+  .preview { width: 100%; max-height: 280px; object-fit: contain; background: #000; border-radius: 14px; margin-bottom: 24px; }
+  .proof-meta { font-family: var(--mono); font-size: 11px; color: var(--dim); letter-spacing: .08em; margin-bottom: 20px; word-break: break-all; line-height: 1.7; }
 
-    .search-box { position: relative; }
-    .search-box input {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-family: inherit;
-      font-size: 13px;
-      padding: 10px 14px 10px 38px;
-      width: 220px;
-      outline: none;
-    }
-    .search-box input:focus { border-color: var(--border-hover); }
-    .search-box input::placeholder { color: var(--text-muted); }
-    .search-box::before {
-      content: "⌕";
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      font-size: 15px;
-    }
+  /* ---------- ONBOARDING ---------- */
+  .onboard { position: fixed; inset: 0; background: #000; z-index: 300; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; text-align: center; overflow-y: auto; }
+  .onboard.open { display: flex; }
+  .onboard h2 { font-family: var(--display); font-weight: 400; font-size: clamp(54px, 15vw, 120px); letter-spacing: .02em; text-transform: uppercase; line-height: .9; margin-bottom: 24px; }
+  .onboard > p { color: var(--dim); font-size: 15px; max-width: 380px; line-height: 1.8; margin-bottom: 56px; }
+  .o-steps { display: flex; flex-direction: column; gap: 34px; margin-bottom: 60px; text-align: left; width: 100%; max-width: 340px; }
+  .o-step { display: flex; gap: 18px; }
+  .o-step .num { font-family: var(--display); font-size: 26px; color: var(--mute); min-width: 34px; }
+  .o-step .tx { font-size: 13px; color: var(--dim); line-height: 1.7; }
+  .o-step .tx strong { color: var(--text); }
 
-    /* ========== GRID ========== */
-    .grid-wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px 80px;
-    }
+  .toast { position: fixed; left: 50%; bottom: calc(28px + env(safe-area-inset-bottom)); transform: translate(-50%, 80px); background: var(--text); color: var(--bg); font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 14px 26px; border-radius: 999px; z-index: 400; opacity: 0; transition: all .3s; pointer-events: none; max-width: calc(100vw - 32px); text-align: center; }
+  .toast.show { transform: translate(-50%, 0); opacity: 1; }
 
-    .elements-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    .card {
-      background: var(--bg);
-      display: flex;
-      flex-direction: column;
-      min-height: 340px;
-      transition: background 0.15s;
-      position: relative;
-    }
-    .card:hover { background: var(--bg-elevated); }
-    .card.mastered { border-left: 3px solid var(--success); }
-
-    .card-media {
-      width: 100%;
-      aspect-ratio: 16/10;
-      background: #080808;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .card-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .card-media .placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      color: var(--text-muted);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-    .card-media .placeholder svg {
-      width: 26px;
-      height: 26px;
-      opacity: 0.35;
-    }
-    .card-media.has-media .placeholder { display: none; }
-
-    .card-body {
-      padding: 18px 18px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      flex-grow: 1;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-    }
-    .card-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 24px;
-      letter-spacing: 0.5px;
-      line-height: 1.1;
-    }
-
-    /* Difficulty circles */
-    .diff-circles {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    .diff-circle {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border-hover);
-      background: transparent;
-    }
-    .diff-circle.filled.light {
-      background: #00ff66;
-      border-color: #00ff66;
-      box-shadow: 0 0 5px #00ff6644;
-    }
-    .diff-circle.filled.medium {
-      background: #ffaa00;
-      border-color: #ffaa00;
-      box-shadow: 0 0 5px #ffaa0044;
-    }
-    .diff-circle.filled.hard {
-      background: #ff2a2a;
-      border-color: #ff2a2a;
-      box-shadow: 0 0 5px #ff2a2a44;
-    }
-    .diff-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-left: 5px;
-      color: var(--text-dim);
-    }
-    .diff-label.light { color: #00ff66; }
-    .diff-label.medium { color: #ffaa00; }
-    .diff-label.hard { color: #ff2a2a; }
-
-    .card-meta {
-      display: flex;
-      gap: 10px;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--text-dim);
-    }
-    .card-meta .mastered-badge { color: var(--success); }
-
-    .card-desc {
-      font-size: 12.5px;
-      color: var(--text-dim);
-      line-height: 1.45;
-      flex-grow: 1;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 6px;
-      margin-top: auto;
-      padding-top: 4px;
-    }
-
-    .btn {
-      font-family: inherit;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      padding: 11px 14px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      cursor: pointer;
-      transition: all 0.15s;
-      flex: 1;
-      text-align: center;
-    }
-    .btn:hover {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
-    }
-    .btn.primary {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
-    }
-    .btn.primary:hover {
-      background: transparent;
-      color: var(--text);
-    }
-    .btn.ghost {
-      border-color: transparent;
-      color: var(--text-dim);
-      flex: 0 0 auto;
-      padding: 11px 12px;
-    }
-    .btn.ghost:hover {
-      color: var(--text);
-      background: transparent;
-      border-color: transparent;
-    }
-    .btn.mastered-btn {
-      background: transparent;
-      color: var(--success);
-      border-color: #00ff6633;
-    }
-    .btn.mastered-btn:hover {
-      background: #00ff6611;
-      border-color: var(--success);
-      color: var(--success);
-    }
-
-    /* ========== MODAL ========== */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.88);
-      z-index: 200;
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      padding: 0;
-    }
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      width: 100%;
-      max-width: 520px;
-      max-height: 92vh;
-      overflow-y: auto;
-      animation: slideUp 0.25s ease;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(40px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .modal-media {
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: #080808;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-    }
-    .modal-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .modal-media .placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-    .modal-media .placeholder svg { width: 32px; height: 32px; opacity: 0.3; }
-    .modal-media.has-media .placeholder { display: none; }
-
-    .modal-media-actions {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-      display: flex;
-      gap: 6px;
-    }
-    .modal-media-actions button {
-      background: rgba(0,0,0,0.75);
-      border: 1px solid var(--border-hover);
-      color: var(--text);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      padding: 8px 12px;
-      cursor: pointer;
-      text-transform: uppercase;
-    }
-    .modal-media-actions button:hover { background: var(--text); color: var(--bg); }
-
-    .modal-content { padding: 28px 22px 32px; }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 18px;
-      gap: 12px;
-    }
-    .modal-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 32px;
-      letter-spacing: 0.5px;
-      line-height: 1;
-    }
-    .modal-close {
-      background: none;
-      border: none;
-      color: var(--text-dim);
-      font-size: 28px;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0;
-      margin-top: -4px;
-    }
-    .modal-close:hover { color: var(--text); }
-
-    .modal-section { margin-bottom: 24px; }
-    .modal-section h3 {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 10px;
-    }
-
-    .progression-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .prog-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 11px 12px;
-      border: 1px solid var(--border);
-      font-size: 13px;
-      cursor: pointer;
-      transition: border-color 0.15s;
-      gap: 12px;
-    }
-    .prog-item:hover { border-color: var(--border-hover); }
-    .prog-item.done { border-color: #00ff6633; color: var(--success); }
-    .prog-item .diff-label { display: none; }
-
-    /* ========== ONBOARDING ========== */
-    .onboard-overlay {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 300;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 24px;
-      text-align: center;
-    }
-    .onboard-overlay.open { display: flex; }
-    .onboard-overlay h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(48px, 12vw, 80px);
-      letter-spacing: 2px;
-      margin-bottom: 16px;
-    }
-    .onboard-overlay p {
-      color: var(--text-dim);
-      font-size: 15px;
-      max-width: 360px;
-      line-height: 1.6;
-      margin-bottom: 36px;
-    }
-    .onboard-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 40px;
-      text-align: left;
-      width: 100%;
-      max-width: 320px;
-    }
-    .onboard-step {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }
-    .onboard-step .num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      color: var(--text-dim);
-      min-width: 28px;
-    }
-    .onboard-step .text {
-      font-size: 13px;
-      color: var(--text-dim);
-      line-height: 1.45;
-    }
-    .onboard-step .text strong { color: var(--text); }
-
-    /* ========== EMPTY / FOOTER ========== */
-    .empty-state {
-      grid-column: 1 / -1;
-      padding: 80px 24px;
-      text-align: center;
-      color: var(--text-dim);
-    }
-    .empty-state h3 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px;
-      letter-spacing: 2px;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 20px;
-      text-align: center;
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    /* ========== TOAST ========== */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--text);
-      color: var(--bg);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      padding: 12px 20px;
-      z-index: 400;
-      opacity: 0;
-      transition: all 0.3s;
-      pointer-events: none;
-    }
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    /* ========== RESPONSIVE ========== */
-    @media (max-width: 640px) {
-      .search-box input { width: 100%; }
-      .controls { flex-direction: column; align-items: stretch; }
-      .elements-grid { grid-template-columns: 1fr; }
-      .stat-pill span { display: none; }
-      .modal { max-height: 94vh; border-radius: 12px 12px 0 0; }
-    }
-
-    @media (min-width: 768px) {
-      .modal-overlay {
-        align-items: center;
-        padding: 24px;
-      }
-      .modal { border-radius: 0; }
-    }
-  </style>
+  @media (max-width: 900px) {
+    .row { grid-template-columns: 38px minmax(0, 1fr) auto; grid-template-areas: "idx name end" "idx meta meta" "idx diff st"; row-gap: 14px; column-gap: 14px; padding: 28px 0; }
+    .r-st { justify-self: end; }
+    .r-meta { margin-top: -4px; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 22px; }
+    .topbar { padding-left: 22px; padding-right: 22px; }
+    .nav { gap: 0; } .nav a { display: none; }
+    .controls { flex-direction: column; align-items: stretch; }
+    .search input { width: 100%; }
+    .stats { gap: 40px 56px; margin-top: 64px; }
+    .label { margin: 110px 0 36px; }
+    .sheet { padding-left: 22px; padding-right: 22px; }
+  }
+</style>
 </head>
 <body>
-  <!-- ONBOARDING -->
-  <div class="onboard-overlay" id="onboard">
-    <h1>ELEMENTS</h1>
-    <p>Твоя личная коллекция калистенических навыков. Добавляй то, что умеешь. Смотри подводки к тому, что ещё нет.</p>
-    <div class="onboard-steps">
-      <div class="onboard-step">
-        <div class="num">01</div>
-        <div class="text"><strong>Смотри элементы</strong><br>Сложность показана кружками: зелёный — лайт, оранж — медиум, красный — хард.</div>
-      </div>
-      <div class="onboard-step">
-        <div class="num">02</div>
-        <div class="text"><strong>Добавляй в коллекцию</strong><br>Если берёшь элемент — жми ADD. Можно сразу прикрепить фото-пруф.</div>
-      </div>
-      <div class="onboard-step">
-        <div class="num">03</div>
-        <div class="text"><strong>Качай прогрессии</strong><br>Не берёшь элемент? Открой INFO и смотри подводящие.</div>
-      </div>
-    </div>
-    <button class="btn primary" id="onboard-start" style="max-width:280px;width:100%;padding:16px;">НАЧАТЬ</button>
-  </div>
 
-  <header>
-    <a href="#" class="logo">ELEMENTS <span>ARCHIVE</span></a>
-    <div class="header-actions">
-      <div class="stat-pill">
-        <strong id="collected-count">0</strong>
-        <span>/ <span id="total-main">0</span></span>
-      </div>
-      <button class="icon-btn" id="btn-export" title="Export collection">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
-      </button>
+<!-- ONBOARDING -->
+<div class="onboard" id="onboard">
+  <h2>ELEMENTS</h2>
+  <p>Твоя личная коллекция калистенических навыков. Умеешь — докажи и забирай. Не умеешь — вот путь, как к этому прийти.</p>
+  <div class="o-steps">
+    <div class="o-step"><div class="num">01</div><div class="tx"><strong>Смотри сложность</strong><br>Шкала от 01 до 10: от зелёного к красному. Чем больше делений горит — тем жёстче элемент.</div></div>
+    <div class="o-step"><div class="num">02</div><div class="tx"><strong>Добавляй в коллекцию</strong><br>Умеешь элемент — жми ADD и прикрепи фото или видео как пруф.</div></div>
+    <div class="o-step"><div class="num">03</div><div class="tx"><strong>Иди по ступеням</strong><br>Не получается? Открой элемент и смотри подводящие. READY — значит вся база у тебя уже есть.</div></div>
+  </div>
+  <button class="btn primary" id="onboard-start" style="max-width:280px;width:100%;padding:16px;flex:none">START</button>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar" id="topbar">
+  <a href="#" class="logo">ELEMENTS</a>
+  <nav class="nav">
+    <a href="#sec-next">Next</a>
+    <a href="#sec-archive">Archive</a>
+  </nav>
+  <i class="top-prog" id="top-prog"></i>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-meta"><span>Calisthenics archive</span><span>V0.3</span></div>
+    <h1><span id="hero-title">ELEMENTS</span></h1>
+    <p class="tagline">Собирай навыки. Фиксируй пруфы. Иди по ступеням.</p>
+    <div class="stats">
+      <div class="stat"><div class="k">Elements</div><div class="v"><span id="s-main">0</span><small id="s-main-t">/0</small></div></div>
+      <div class="stat"><div class="k">Score</div><div class="v"><span id="s-score">0</span><small id="s-score-t">/0</small></div></div>
+      <div class="stat"><div class="k">Proofs</div><div class="v" id="s-proofs">0</div></div>
+      <div class="stat"><div class="k">Rank</div><div class="v" id="s-rank">—</div><div class="rankbar"><i id="s-bar"></i></div></div>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="hero-label">CALISTHENICS SKILL ARCHIVE</div>
-    <h1>ELEMENTS</h1>
-    <p>Собирай навыки. Фиксируй пруфы. Смотри прогрессии. Строй свою коллекцию.</p>
-  </section>
+  <div class="label" id="sec-next"><b>01</b> Next up</div>
+  <div class="next" id="next"></div>
 
+  <div class="label" id="sec-archive"><b>02</b> Archive</div>
   <div class="controls">
-    <div class="filters">
-      <button class="filter-btn active" data-filter="all">ALL</button>
-      <button class="filter-btn" data-filter="mastered">COLLECTION</button>
-      <button class="filter-btn" data-filter="locked">LOCKED</button>
-      <button class="filter-btn" data-filter="static">STATIC</button>
-      <button class="filter-btn" data-filter="dynamic">DYNAMIC</button>
-    </div>
-    <div class="search-box">
-      <input type="text" id="search" placeholder="Search element...">
-    </div>
+    <div class="filters" id="f-group"></div>
+    <div class="search"><input type="text" id="search" placeholder="Search..." autocomplete="off"></div>
   </div>
+  <div class="filters" id="f-status"></div>
+  <div class="count-line" id="count-line"></div>
+  <div class="list" id="grid"></div>
 
-  <div class="grid-wrap">
-    <div class="elements-grid" id="grid"></div>
-  </div>
+  <footer>
+    <span>Данные хранятся в твоём браузере</span>
+    <button id="reset">Reset collection</button>
+  </footer>
+</div>
 
-  <footer>ELEMENTS — BUILD YOUR ARCHIVE</footer>
+<!-- MODAL -->
+<div class="overlay" id="modal" aria-hidden="true"></div>
+<div class="toast" id="toast"></div>
 
-  <!-- MODAL -->
-  <div class="modal-overlay" id="modal">
-    <div class="modal">
-      <div class="modal-media" id="modal-media">
-        <div class="placeholder">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="5" width="18" height="14" rx="1"/>
-            <circle cx="8.5" cy="10.5" r="1.5"/>
-            <path d="M21 15l-5-5L5 19"/>
-          </svg>
-          NO PHOTO YET
-        </div>
-        <div class="modal-media-actions">
-          <button id="btn-upload">ADD PHOTO</button>
-          <button id="btn-remove-photo" style="display:none;">REMOVE</button>
-        </div>
-      </div>
-      <input type="file" id="photo-input" accept="image/*" style="display:none">
+<script>
+/* =========================================================
+   ДАННЫЕ. Хочешь добавить элемент — допиши строку.
+   E(id, название, группа, тип, сложность 1–10, [подводящие], описание, main?)
+   main = 1 → показывается в основном списке, 0 → "ступень"
+   ========================================================= */
+/* DATA START */
+const GROUPS = { push:'PUSH', pull:'PULL', core:'CORE', legs:'LEGS' };
+const TYPES  = { static:'STATIC', dynamic:'DYNAMIC' };
+const ELEMENTS = [];
+function E(id, name, group, type, diff, pre, desc, main = 0){ ELEMENTS.push({ id, name, group, type, diff, pre, desc, main: !!main }); }
 
-      <div class="modal-content">
-        <div class="modal-header">
-          <div>
-            <div class="modal-title" id="modal-name"></div>
-            <div style="font-size:12px;color:var(--text-dim);margin-top:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;" id="modal-meta"></div>
-          </div>
-          <button class="modal-close" id="modal-close">×</button>
-        </div>
+// ---- MAIN ----
+E('pushup','PUSH-UP','push','dynamic',1,[],'Классические отжимания. Полная амплитуда, корпус жёсткий как доска.',1);
+E('squat','SQUAT','legs','dynamic',1,[],'Присед с собственным весом. Бёдра ниже параллели, пятки на полу.',1);
+E('aus-pullup','AUSTRALIAN PULL-UP','pull','dynamic',2,[],'Горизонтальная тяга под перекладиной. Лучший вход в подтягивания.',1);
+E('pullup','PULL-UP','pull','dynamic',3,['aus-pullup','dead-hang'],'Из полного виса до подбородка над перекладиной. Без раскачки.',1);
+E('chinup','CHIN-UP','pull','dynamic',3,['aus-pullup'],'Обратный хват. Сильнее включается бицепс.',1);
+E('dip','DIP','push','dynamic',3,['bench-dip'],'Отжимания на брусьях. Плечи ниже локтей, выход в жёсткий упор.',1);
+E('pistol','PISTOL SQUAT','legs','dynamic',5,['assisted-pistol','shrimp-squat'],'Присед на одной ноге. Сила, баланс и подвижность голеностопа.',1);
+E('ttb','TOES TO BAR','core','dynamic',5,['hanging-leg-raise'],'Из виса поднимаем носки до касания перекладины.',1);
+E('lsit','L-SIT','core','static',4,['one-leg-lsit'],'Упор на прямых руках, ноги прямые и параллельны полу.',1);
+E('vsit','V-SIT','core','static',6,['lsit'],'Ноги выше горизонтали, корпус компактный. Следующий уровень после L-sit.',1);
+E('elbow-lever','ELBOW LEVER','push','static',4,['frogstand'],'Упор на локтях, тело горизонтально над полом.',1);
+E('handstand','HANDSTAND','push','static',5,['wall-handstand','frogstand'],'Свободная стойка на руках, 30 секунд без стены.',1);
+E('muscleup','MUSCLE-UP','pull','dynamic',6,['explosive-pullup','russian-dip','bar-dip'],'Переход из виса в упор над перекладиной. Взрыв плюс техника.',1);
+E('hspu','HANDSTAND PUSH-UP','push','dynamic',7,['handstand','wall-hspu'],'Отжимания в стойке без опоры. Сила плеч плюс баланс.',1);
+E('one-arm-pushup','ONE ARM PUSH-UP','push','dynamic',7,['archer-pushup'],'Отжимание на одной руке, ноги широко. Контроль корпуса против вращения.',1);
+E('ring-muscleup','RING MUSCLE-UP','pull','dynamic',7,['muscleup','support-hold','ring-dip'],'Выход силой на кольцах. Нужна стабилизация.',1);
+E('backlever','BACK LEVER','pull','static',7,['straddle-bl'],'Горизонталь лицом вниз под перекладиной.',1);
+E('dragonflag','DRAGON FLAG','core','static',7,['one-leg-dragon'],'Тело в одну линию, опора только на лопатки. Классика кора.',1);
+E('frontlever','FRONT LEVER','pull','static',8,['one-leg-fl'],'Горизонталь лицом вверх. Спина и кор на максимум.',1);
+E('humanflag','HUMAN FLAG','core','static',8,['straddle-flag'],'Боковая горизонталь на вертикальной опоре.',1);
+E('oap','ONE ARM PULL-UP','pull','dynamic',9,['negative-oap'],'Подтягивание на одной руке. Полная амплитуда.',1);
+E('one-arm-handstand','ONE ARM HANDSTAND','push','static',9,['hs-shoulder-taps'],'Стойка на одной руке.',1);
+E('planche','PLANCHE','push','static',10,['straddle-planche'],'Горизонталь на прямых руках, ноги вместе, без опоры. Вершина статики.',1);
+E('maltese','MALTESE','push','static',10,['planche'],'Горизонтальный упор с широко разведёнными руками.',1);
+E('victorian','VICTORIAN','pull','static',10,['planche','backlever'],'Одна из самых тяжёлых статик в калистенике. Элита элит.',1);
+E('iron-cross','IRON CROSS','pull','static',10,['ring-muscleup'],'Крест на кольцах. Руки в стороны, тело вертикально.',1);
 
-        <div class="modal-section">
-          <h3>DESCRIPTION</h3>
-          <p id="modal-desc" style="font-size:14px;color:var(--text-dim);line-height:1.55;"></p>
-        </div>
+E('plank','PLANK','core','static',1,[],'Упор лёжа на предплечьях, тело в одну линию. Минимум минуту без провала в пояснице.',1);
+E('clap-pushup','CLAP PUSH-UP','push','dynamic',3,['pushup'],'Взрывное отжимание с хлопком. Руки возвращаются под плечи мягко.',1);
+E('press-handstand','PRESS TO HANDSTAND','push','dynamic',6,['lsit','wall-handstand'],'Выход в стойку на руках силой, без прыжка. Нужны сила плеч и компрессия.',1);
+E('nordic','NORDIC CURL','legs','dynamic',6,['nordic-negative'],'Опускаем корпус вперёд на коленях, держим только задней поверхностью бедра, и возвращаемся.',1);
+E('pullup-360','360 PULL-UP','pull','dynamic',6,['explosive-pullup'],'Высокое подтягивание с разворотом на 360° над перекладиной.',1);
+E('handstand-walk','HANDSTAND WALK','push','dynamic',7,['handstand'],'Ходьба на руках. Контроль баланса в движении, шаги короткие.',1);
+E('dragon-squat','DRAGON SQUAT','legs','dynamic',7,['pistol'],'Присед на одной ноге с заведением второй за опорную. Сила, баланс и мобильность.',1);
+E('windshield','WINDSHIELD WIPERS','core','dynamic',7,['ttb'],'В висе ноги прямые, носки у перекладины, маятник из стороны в сторону.',1);
+E('manna','MANNA','core','static',9,['vsit'],'Корпус горизонтально, ноги вытянуты вперёд, упор только на руках. Предел для кора и плеч.',1);
+E('pushup-90','90° PUSH-UP','push','dynamic',9,['hspu','straddle-planche'],'Из стойки опускаемся в горизонтальную позицию, и обратно. Мост между HSPU и планшем.',1);
+E('planche-pushup','PLANCHE PUSH-UP','push','dynamic',10,['planche'],'Отжимания в полной планше. Элита среди элит.',1);
 
-        <div class="modal-section" id="progressions-section">
-          <h3>PROGRESSIONS</h3>
-          <div class="progression-list" id="progression-list"></div>
-        </div>
+// ---- СТУПЕНИ ----
+E('dead-hang','DEAD HANG','pull','static',1,[],'Вис на перекладине 30–60 секунд. Хват и плечи.');
+E('hollow-body','HOLLOW BODY','core','static',1,['plank'],'Поясница прижата к полу, руки и ноги вытянуты. База для всех статик.');
+E('bench-dip','BENCH DIP','push','dynamic',2,['pushup'],'Отжимания от скамьи, ноги на полу.');
+E('tuck-lsit','TUCK L-SIT','core','static',2,[],'Упор на руках, колени подтянуты к груди.');
+E('one-leg-lsit','ONE LEG L-SIT','core','static',3,['tuck-lsit'],'Одна нога прямая, вторая согнута.');
+E('wall-handstand','WALL HANDSTAND','push','static',3,[],'Стойка лицом к стене. 30 секунд без провала в плечах.');
+E('frogstand','FROGSTAND','push','static',3,[],'Упор на согнутых руках, колени на локтях. Первый баланс на руках.');
+E('pike-pushup','PIKE PUSH-UP','push','dynamic',3,['pushup'],'Таз вверх, голова между рук. Подводка к жиму в стойке.');
+E('support-hold','SUPPORT HOLD','push','static',3,[],'Упор на брусьях или кольцах, руки прямые, плечи вниз.');
+E('hanging-leg-raise','HANGING LEG RAISE','core','dynamic',3,['hanging-knee-raise'],'Ноги прямые до уровня перекладины, без раскачки.');
+E('assisted-pistol','ASSISTED PISTOL','legs','dynamic',3,['squat'],'Пистолет с опорой на руку или стойку.');
+E('shrimp-squat','SHRIMP SQUAT','legs','dynamic',4,['squat','split-squat'],'Присед на одной ноге, вторая согнута назад.');
+E('explosive-pullup','EXPLOSIVE PULL-UP','pull','dynamic',4,['pullup'],'Подтягивание на максимальной скорости, грудь к перекладине.');
+E('tuck-bl','TUCK BACK LEVER','pull','static',4,['skin-the-cat'],'Сгруппированный back lever.');
+E('tuck-dragon','TUCK DRAGON FLAG','core','static',4,['hollow-body'],'Сгруппированный dragon flag.');
+E('tuck-fl','TUCK FRONT LEVER','pull','static',4,['pullup'],'Сгруппированный front lever, колени к груди.');
+E('pseudo-planche-pushup','PSEUDO PLANCHE PUSH-UP','push','dynamic',4,['dip','planche-lean'],'Кисти у таза, плечи далеко вперёд. Готовим плечи к планше.');
+E('wall-hspu','WALL HSPU','push','dynamic',5,['pike-pushup','wall-handstand'],'Жим в стойке у стены, живот к стене.');
+E('russian-dip','RUSSIAN DIP','push','dynamic',5,['dip'],'Брусья с переходом на предплечья. Подводка к выходу силой.');
+E('adv-tuck-bl','ADV. TUCK BACK LEVER','pull','static',5,['tuck-bl'],'Спина открыта, колени отведены.');
+E('one-leg-dragon','ONE LEG DRAGON FLAG','core','static',5,['tuck-dragon'],'Одна нога выпрямлена.');
+E('adv-tuck-fl','ADV. TUCK FRONT LEVER','pull','static',5,['tuck-fl'],'Спина плоская, колени отведены от груди.');
+E('flag-raises','FLAG RAISES','core','dynamic',5,['pullup'],'Подъёмы корпуса в сторону на вертикальной опоре.');
+E('tuck-planche','TUCK PLANCHE','push','static',5,['pseudo-planche-pushup','frogstand'],'Колени подтянуты, тело параллельно полу на прямых руках.');
+E('archer-pushup','ARCHER PUSH-UP','push','dynamic',5,['pushup'],'Одна рука работает, вторая выпрямлена в сторону.');
+E('archer-pullup','ARCHER PULL-UP','pull','dynamic',6,['pullup'],'Тянем в одну сторону, вторая рука выпрямлена.');
+E('straddle-bl','STRADDLE BACK LEVER','pull','static',6,['adv-tuck-bl'],'Ноги врозь.');
+E('straddle-fl','STRADDLE FRONT LEVER','pull','static',6,['adv-tuck-fl'],'Ноги врозь, тело в горизонтали.');
+E('tuck-flag','TUCK HUMAN FLAG','core','static',6,['flag-raises'],'Сгруппированный флаг.');
+E('adv-tuck-planche','ADV. TUCK PLANCHE','push','static',6,['tuck-planche'],'Спина плоская, колени отведены от груди.');
+E('hs-shoulder-taps','HS SHOULDER TAPS','push','dynamic',6,['handstand'],'Касания плеч в стойке. Переносим вес на одну руку.');
+E('one-leg-fl','ONE LEG FRONT LEVER','pull','static',7,['straddle-fl'],'Одна нога прямая, вторая в tuck.');
+E('straddle-flag','STRADDLE HUMAN FLAG','core','static',7,['tuck-flag'],'Ноги врозь.');
+E('assisted-oap','ASSISTED OAP','pull','dynamic',7,['archer-pullup'],'Подтягивание на одной руке с помощью второй.');
+E('negative-oap','NEGATIVE OAP','pull','dynamic',8,['assisted-oap'],'Медленные негативы на одной руке.');
+E('straddle-planche','STRADDLE PLANCHE','push','static',8,['adv-tuck-planche'],'Ноги прямые и разведены.');
+E('diamond-pushup','DIAMOND PUSH-UP','push','dynamic',2,['pushup'],'Узкая постановка рук под грудью. Нагрузка уходит на трицепс.');
+E('hanging-knee-raise','HANGING KNEE RAISE','core','dynamic',2,['dead-hang'],'Из виса подтягиваем колени к груди, без раскачки.');
+E('split-squat','SPLIT SQUAT','legs','dynamic',2,['squat'],'Выпад на месте. Первый шаг к приседу на одной ноге.');
+E('planche-lean','PLANCHE LEAN','push','static',3,['pushup'],'Упор лёжа с наклоном плеч вперёд за кисти. Привыкаем к нагрузке планши.');
+E('bar-dip','STRAIGHT BAR DIP','push','dynamic',3,['dip'],'Брусья на прямой перекладине. Подводка к выходу силой.');
+E('korean-dip','KOREAN DIP','push','dynamic',5,['dip'],'Отжимания на перекладине за спиной. Сильная нагрузка на плечи и грудь.');
+E('ring-dip','RING DIP','push','dynamic',5,['dip','support-hold'],'Брусья на кольцах. Кольца нестабильны, поэтому включается всё плечо.');
+E('skin-the-cat','SKIN THE CAT','pull','dynamic',4,['dead-hang','hollow-body'],'В висе перекатываемся назад через плечи в немецкий вис, и обратно. База для back lever.');
+E('nordic-negative','NORDIC NEGATIVE','legs','dynamic',4,['squat'],'Медленное опускание корпуса вперёд на коленях с упором под стопы. Задняя поверхность бедра.');
+E('typewriter-pullup','TYPEWRITER PULL-UP','pull','dynamic',6,['archer-pullup'],'Подтянулись вверх и «скользим» из стороны в сторону над перекладиной.');
+E('lsit-pullup','L-SIT PULL-UP','pull','dynamic',6,['pullup','lsit'],'Подтягивания с ногами в уголке. Нагрузка на тягу и кор одновременно.');
+/* DATA END */
 
-        <div class="card-actions">
-          <button class="btn primary" id="modal-toggle"></button>
-        </div>
-      </div>
+const RANKS = [[0,'RECRUIT'],[20,'BASE'],[65,'ATHLETE'],[145,'BEAST'],[260,'ELITE'],[390,'LEGEND']];
+const KEY = 'elements.v2';
+
+/* ---------- state ---------- */
+const byId = Object.fromEntries(ELEMENTS.map(e => [e.id, e]));
+const MAIN = ELEMENTS.filter(e => e.main);
+let state = loadState();
+let fGroup = 'all', fType = 'all', fStatus = 'all', showSteps = false, query = '';
+let currentId = null;
+
+function loadState(){
+  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.owned) return s; } catch {}
+  // миграция из версии, собранной с Grok (el_mastered / el_photos)
+  const st = { owned: {} };
+  try {
+    const m = JSON.parse(localStorage.getItem('el_mastered') || '[]');
+    const p = JSON.parse(localStorage.getItem('el_photos') || '{}');
+    m.forEach(id => { if (byId[id]) st.owned[id] = { date: Date.now(), proof: p[id] ? { type:'image', name:'photo', thumb:p[id] } : null }; });
+  } catch {}
+  return st;
+}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); return true; } catch { return false; } }
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pad = n => String(n).padStart(2, '0');
+const isOwned = id => !!state.owned[id];
+const stOf = e => isOwned(e.id) ? 'owned' : (e.pre.every(isOwned) ? 'ready' : 'locked');
+const ST_TXT = { owned:'MASTERED', ready:'READY', locked:'LOCKED' };
+
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+function tier(d){ return d <= 3 ? { n:'light', l:'LIGHT', c:1 } : d <= 6 ? { n:'medium', l:'MEDIUM', c:2 } : { n:'hard', l:'HARD', c:3 }; }
+/* цвет задаёт сложность элемента: 1 — зелёный, 5 — жёлто-зелёный, 7 — жёлтый, 10 — красный.
+   Все горящие деления одного цвета, чтобы уровень читался с первого взгляда. */
+const tickColor = d => `hsl(${Math.round(140 - (d - 1) / 9 * 140)} 100% 54%)`;
+function diffUI(d){
+  const c = tickColor(d);
+  let t = ''; for (let i = 1; i <= 10; i++) t += `<i class="${i <= d ? 'f' : ''}" style="--c:${c}"></i>`;
+  return `<div class="diff"><span class="ticks">${t}</span><span class="dl" style="color:${c}">${pad(d)}</span></div>`;
+}
+const PH = `<div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg>NO PROOF</div>`;
+
+/* ---------- render: stats / next / filters / grid ---------- */
+function renderStats(){
+  const owned = ELEMENTS.filter(e => isOwned(e.id));
+  const mainOwned = MAIN.filter(e => isOwned(e.id)).length;
+  const score = owned.reduce((a, e) => a + e.diff, 0);
+  const total = ELEMENTS.reduce((a, e) => a + e.diff, 0);
+  const proofs = owned.filter(e => state.owned[e.id].proof).length;
+  $('#top-prog').style.width = (MAIN.length ? mainOwned / MAIN.length * 100 : 0) + '%';
+  $('#s-main').textContent = mainOwned; $('#s-main-t').textContent = '/' + MAIN.length;
+  $('#s-score').textContent = score; $('#s-score-t').textContent = '/' + total;
+  $('#s-proofs').textContent = proofs;
+  let ri = 0; RANKS.forEach((r, i) => { if (score >= r[0]) ri = i; });
+  $('#s-rank').textContent = RANKS[ri][1];
+  const nx = RANKS[ri + 1];
+  $('#s-bar').style.width = (nx ? (score - RANKS[ri][0]) / (nx[0] - RANKS[ri][0]) * 100 : 100) + '%';
+}
+
+function renderNext(){
+  const ready = ELEMENTS.filter(e => stOf(e) === 'ready')
+    .sort((a, b) => a.diff - b.diff || (b.main - a.main) || a.name.localeCompare(b.name))
+    .slice(0, 3);
+  $('#next').innerHTML = ready.length ? ready.map(e => `
+    <button class="next-card" data-act="open" data-id="${e.id}">
+      <div class="n">${GROUPS[e.group]} · ${TYPES[e.type]}</div>
+      <div class="t">${e.name}</div>
+      ${diffUI(e.diff)}
+    </button>`).join('')
+    : `<div class="empty">${ELEMENTS.every(e => isOwned(e.id)) ? 'Всё собрано. Это конец. Или начало v3.' : 'Добавь пару базовых элементов — здесь появятся цели.'}</div>`;
+}
+
+function renderFilters(){
+  $('#f-group').innerHTML =
+    [['all','ALL'], ...Object.entries(GROUPS)].map(([k,v]) => `<button class="chip ${fGroup===k?'on':''}" data-group="${k}">${v}</button>`).join('')
+    + '<span class="sep"></span>'
+    + Object.entries(TYPES).map(([k,v]) => `<button class="chip ${fType===k?'on':''}" data-type="${k}">${v}</button>`).join('');
+  $('#f-status').innerHTML =
+    [['all','ANY'],['owned','COLLECTION'],['ready','READY'],['locked','LOCKED']].map(([k,v]) => `<button class="chip ${fStatus===k?'on':''}" data-st="${k}">${v}</button>`).join('')
+    + '<span class="sep"></span>'
+    + `<button class="chip ${showSteps?'on':''}" data-steps>+ STEPS</button>`;
+}
+
+function visibleList(){
+  const q = query.toLowerCase();
+  return ELEMENTS.filter(e => {
+    if (!e.main && !showSteps && !q && fStatus !== 'owned') return false;
+    if (fGroup !== 'all' && e.group !== fGroup) return false;
+    if (fType !== 'all' && e.type !== fType) return false;
+    if (fStatus !== 'all' && stOf(e) !== fStatus) return false;
+    if (q && !e.name.toLowerCase().includes(q) && !e.desc.toLowerCase().includes(q)) return false;
+    return true;
+  }).sort((a, b) => a.diff - b.diff || (b.main - a.main) || a.name.localeCompare(b.name));
+}
+
+function renderGrid(){
+  const list = visibleList();
+  $('#count-line').textContent = `${pad(list.length)} / ${pad(ELEMENTS.length)}` + (showSteps || query ? '' : '  ·  ступени скрыты (+ STEPS)');
+  const grid = $('#grid');
+  if (!list.length){ grid.innerHTML = `<div class="empty-grid"><h3>EMPTY</h3><p>Ничего не найдено</p></div>`; return; }
+  grid.innerHTML = list.map((e, i) => {
+    const st = stOf(e), own = state.owned[e.id];
+    const thumb = own && own.proof && own.proof.thumb;
+    const stTxt = st === 'owned' ? `MASTERED${own.proof ? ' ✓' : ''}` : st === 'ready' ? 'READY' : 'LOCKED';
+    const end = thumb ? `<img class="r-thumb" src="${thumb}" alt="">`
+              : st === 'ready' ? `<button class="r-add" data-act="add" data-id="${e.id}">ADD +</button>` : '';
+    return `
+    <article class="row ${st}" data-act="open" data-id="${e.id}">
+      <span class="r-idx">${pad(i + 1)}</span>
+      <h3 class="r-name"><button data-act="open" data-id="${e.id}">${e.name}</button></h3>
+      <span class="r-meta">${GROUPS[e.group]} · ${TYPES[e.type]}${e.main ? '' : ' · STEP'}</span>
+      <span class="r-diff">${diffUI(e.diff)}</span>
+      <span class="r-st">${stTxt}</span>
+      <span class="r-end">${end}</span>
+    </article>`;
+  }).join('');
+}
+
+function renderAll(){ renderStats(); renderNext(); renderFilters(); renderGrid(); }
+
+/* ---------- modal ---------- */
+const modal = $('#modal');
+
+function openModal(id, opts = {}){
+  const e = byId[id]; if (!e) return;
+  currentId = id;
+  const keepScroll = modal.classList.contains('open') && modal.firstElementChild ? modal.firstElementChild.scrollTop : 0;
+  const st = stOf(e), own = state.owned[id];
+  const pre = e.pre.map(x => byId[x]);
+  const nxt = ELEMENTS.filter(x => x.pre.includes(id));
+  const thumb = own && own.proof && own.proof.thumb;
+
+  const row = x => { const s = stOf(x); return `
+    <button data-act="open" data-id="${x.id}">
+      <span class="pn">${x.name}</span>
+      <span class="pr">${diffUI(x.diff)}<span class="ps ${s}">${ST_TXT[s]}</span></span>
+    </button>`; };
+
+  let claim;
+  if (own){
+    const p = own.proof;
+    claim = `<div class="sec"><h3>Proof</h3>
+      <div class="proof-meta">${p ? `${p.type === 'video' ? 'VIDEO' : 'PHOTO'} · ${esc(p.name)} · ${new Date(own.date).toLocaleDateString('ru-RU')}` : 'Без пруфа. Добавь фото или видео, чтобы подтвердить элемент.'}</div>
+      <div class="actions"><button class="btn" data-act="replace">${p ? 'REPLACE PROOF' : 'ADD PROOF'}</button><button class="btn ghost" data-act="remove">REMOVE</button></div>
+      <div id="claim" style="margin-top:12px"></div></div>`;
+  } else {
+    claim = `<div class="sec"><h3>Claim</h3>
+      ${st === 'locked' ? '<p class="hint">Базы в коллекции пока нет. Если ты это уже умеешь — добавляй, но лучше отметь и ступени ниже.</p>' : ''}
+      <div id="claim"><div class="actions"><button class="btn primary" data-act="start-add">УМЕЮ — ДОБАВИТЬ</button></div></div></div>`;
+  }
+
+  let prog;
+  if (!pre.length) prog = `<div class="sec"><h3>Progressions</h3><p class="hint" style="margin:0">Это база. Подводящих нет — начинай отсюда.</p></div>`;
+  else {
+    const miss = pre.filter(p => !isOwned(p.id)).length;
+    prog = `<div class="sec"><h3>Progressions</h3>
+      <p class="hint">${own ? 'Путь, который ты прошёл:' : miss ? 'Не получается? Сначала закрой эти ступени:' : 'Вся база у тебя есть. Пора пробовать.'}</p>
+      <div class="path">${pre.map(row).join('')}</div></div>`;
+  }
+
+  modal.innerHTML = `
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="${e.name}">
+    <div class="s-top">
+      <div class="s-meta">${GROUPS[e.group]} · ${TYPES[e.type]} · ${ST_TXT[st]}</div>
+      <button class="s-close" data-act="close">CLOSE ✕</button>
     </div>
-  </div>
+    <div class="s-media">${thumb ? `<img src="${thumb}" alt="">` : PH}</div>
+    <div class="s-body">
+      <div class="s-title">${e.name}</div>
+      <div class="s-diff">${diffUI(e.diff)}<b style="color:${tickColor(e.diff)}">${tier(e.diff).l}</b></div>
+      <p class="s-desc">${e.desc}</p>
+      ${claim}
+      ${prog}
+      ${nxt.length ? `<div class="sec"><h3>Unlocks</h3><div class="path">${nxt.map(row).join('')}</div></div>` : ''}
+    </div>
+  </div>`;
 
-  <div class="toast" id="toast"></div>
+  modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  const sheet = modal.firstElementChild;
+  sheet.scrollTop = opts.keepScroll ? keepScroll : 0;
+  if (opts.add && !own) showUpload(id, 'add');
+}
 
-  <script>
-    const ELEMENTS = [
-      // MAIN
-      { id:"pushup", name:"PUSH-UP", difficulty:1, type:"dynamic", desc:"Классические отжимания. Полная амплитуда, корпус жёсткий.", progressions:[] },
-      { id:"squat", name:"SQUAT", difficulty:1, type:"dynamic", desc:"Приседания с собственным весом.", progressions:[] },
-      { id:"australian-pullup", name:"AUSTRALIAN PULL-UP", difficulty:2, type:"dynamic", desc:"Горизонтальные подтягивания. Отличный вход в тягу.", progressions:[] },
-      { id:"pullup", name:"PULL-UP", difficulty:2, type:"dynamic", desc:"Базовый вертикальный тяговый элемент.", progressions:["australian-pullup"] },
-      { id:"chinup", name:"CHIN-UP", difficulty:2, type:"dynamic", desc:"Супинированный хват. Сильнее бицепс.", progressions:[] },
-      { id:"dip", name:"DIP", difficulty:3, type:"dynamic", desc:"Отжимания на брусьях. Полная амплитуда.", progressions:["bench-dip"] },
-      { id:"pistol-squat", name:"PISTOL SQUAT", difficulty:5, type:"dynamic", desc:"Присед на одной ноге. Сила + баланс.", progressions:["assisted-pistol","shrimp-squat"] },
-      { id:"lsit", name:"L-SIT", difficulty:4, type:"static", desc:"Ноги параллельны полу, руки прямые.", progressions:["tuck-lsit","one-leg-lsit"] },
-      { id:"vsit", name:"V-SIT", difficulty:6, type:"static", desc:"Ноги высоко, корпус компактный.", progressions:["lsit","tuck-lsit"] },
-      { id:"handstand", name:"HANDSTAND", difficulty:5, type:"static", desc:"Стойка на руках. У стены или фристендинг.", progressions:["wall-handstand","frogstand"] },
-      { id:"hspu", name:"HANDSTAND PUSH-UP", difficulty:7, type:"dynamic", desc:"Отжимания в стойке на руках.", progressions:["handstand","pike-pushup","wall-hspu"] },
-      { id:"muscleup", name:"MUSCLE-UP", difficulty:6, type:"dynamic", desc:"Переход из виса в упор. Взрыв + техника.", progressions:["pullup","dip","explosive-pullup","russian-dip"] },
-      { id:"bar-muscleup", name:"BAR MUSCLE-UP", difficulty:6, type:"dynamic", desc:"Muscle-up на перекладине.", progressions:["muscleup","explosive-pullup"] },
-      { id:"ring-muscleup", name:"RING MUSCLE-UP", difficulty:7, type:"dynamic", desc:"Muscle-up на кольцах. Нужна стабилизация.", progressions:["muscleup","support-hold"] },
-      { id:"elbow-lever", name:"ELBOW LEVER", difficulty:4, type:"static", desc:"Упор на локтях, тело горизонтально.", progressions:["frogstand"] },
-      { id:"backlever", name:"BACK LEVER", difficulty:7, type:"static", desc:"Горизонталь лицом вниз.", progressions:["tuck-backlever","advanced-tuck-bl","straddle-bl"] },
-      { id:"dragonflag", name:"DRAGON FLAG", difficulty:7, type:"static", desc:"Полный контроль корпуса. Классика кора.", progressions:["tuck-dragon","one-leg-dragon"] },
-      { id:"frontlever", name:"FRONT LEVER", difficulty:8, type:"static", desc:"Горизонталь лицом вверх.", progressions:["tuck-fl","advanced-tuck-fl","straddle-fl","one-leg-fl"] },
-      { id:"humanflag", name:"HUMAN FLAG", difficulty:8, type:"static", desc:"Флаг на вертикальной опоре.", progressions:["flag-raises","tuck-flag","straddle-flag"] },
-      { id:"planche", name:"PLANCHE", difficulty:9, type:"static", desc:"Горизонталь на руках без опоры ногами.", progressions:["tuck-planche","advanced-tuck-planche","straddle-planche","frogstand","elbow-lever"] },
-      { id:"oap", name:"ONE ARM PULL-UP", difficulty:9, type:"dynamic", desc:"Подтягивание на одной руке.", progressions:["pullup","archer-pullup","assisted-oap","negative-oap"] },
-      { id:"one-arm-handstand", name:"ONE ARM HANDSTAND", difficulty:9, type:"static", desc:"Стойка на одной руке.", progressions:["handstand","handstand-shoulder-taps"] },
-      { id:"fullplanche", name:"FULL PLANCHE", difficulty:10, type:"static", desc:"Полная планка, ноги вместе. Элита.", progressions:["planche","straddle-planche"] },
-      { id:"maltese", name:"MALTESE", difficulty:10, type:"static", desc:"Горизонтальный упор с разведёнными руками.", progressions:["planche","fullplanche","pseudo-planche-pushup"] },
-      { id:"victorian", name:"VICTORIAN", difficulty:10, type:"static", desc:"Одна из самых тяжёлых статик.", progressions:["backlever","planche"] },
-      { id:"iron-cross", name:"IRON CROSS", difficulty:10, type:"static", desc:"Крест на кольцах.", progressions:["support-hold","ring-muscleup"] },
+function closeModal(){
+  modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true');
+  modal.innerHTML = ''; currentId = null; document.body.style.overflow = '';
+}
 
-      // HELPERS
-      { id:"bench-dip", name:"BENCH DIP", difficulty:2, type:"dynamic", desc:"Отжимания от скамьи.", progressions:[] },
-      { id:"tuck-lsit", name:"TUCK L-SIT", difficulty:2, type:"static", desc:"Колени к груди.", progressions:[] },
-      { id:"one-leg-lsit", name:"ONE LEG L-SIT", difficulty:3, type:"static", desc:"Одна нога выпрямлена.", progressions:["tuck-lsit"] },
-      { id:"wall-handstand", name:"WALL HANDSTAND", difficulty:3, type:"static", desc:"Стойка у стены.", progressions:[] },
-      { id:"frogstand", name:"FROGSTAND", difficulty:3, type:"static", desc:"Упор на согнутых руках.", progressions:[] },
-      { id:"pike-pushup", name:"PIKE PUSH-UP", difficulty:4, type:"dynamic", desc:"Отжимания в позе щуки.", progressions:[] },
-      { id:"wall-hspu", name:"WALL HSPU", difficulty:5, type:"dynamic", desc:"HSPU у стены.", progressions:["pike-pushup","handstand"] },
-      { id:"explosive-pullup", name:"EXPLOSIVE PULL-UP", difficulty:4, type:"dynamic", desc:"Взрывные подтягивания.", progressions:["pullup"] },
-      { id:"russian-dip", name:"RUSSIAN DIP", difficulty:5, type:"dynamic", desc:"Отжимания с переходом.", progressions:["dip"] },
-      { id:"support-hold", name:"SUPPORT HOLD", difficulty:3, type:"static", desc:"Упор на кольцах/брусьях.", progressions:[] },
-      { id:"tuck-backlever", name:"TUCK BACK LEVER", difficulty:4, type:"static", desc:"Сгруппированный back lever.", progressions:[] },
-      { id:"advanced-tuck-bl", name:"ADV. TUCK BACK LEVER", difficulty:5, type:"static", desc:"Спина открыта.", progressions:["tuck-backlever"] },
-      { id:"straddle-bl", name:"STRADDLE BACK LEVER", difficulty:6, type:"static", desc:"Ноги врозь.", progressions:["advanced-tuck-bl"] },
-      { id:"tuck-dragon", name:"TUCK DRAGON FLAG", difficulty:4, type:"static", desc:"Сгруппированный dragon flag.", progressions:[] },
-      { id:"one-leg-dragon", name:"ONE LEG DRAGON FLAG", difficulty:5, type:"static", desc:"Одна нога выпрямлена.", progressions:["tuck-dragon"] },
-      { id:"tuck-fl", name:"TUCK FRONT LEVER", difficulty:4, type:"static", desc:"Сгруппированный front lever.", progressions:[] },
-      { id:"advanced-tuck-fl", name:"ADV. TUCK FRONT LEVER", difficulty:5, type:"static", desc:"Спина выпрямлена.", progressions:["tuck-fl"] },
-      { id:"straddle-fl", name:"STRADDLE FRONT LEVER", difficulty:6, type:"static", desc:"Ноги врозь.", progressions:["advanced-tuck-fl"] },
-      { id:"one-leg-fl", name:"ONE LEG FRONT LEVER", difficulty:7, type:"static", desc:"Одна нога выпрямлена.", progressions:["straddle-fl"] },
-      { id:"flag-raises", name:"FLAG RAISES", difficulty:5, type:"dynamic", desc:"Подъёмы в сторону.", progressions:[] },
-      { id:"tuck-flag", name:"TUCK HUMAN FLAG", difficulty:6, type:"static", desc:"Сгруппированный флаг.", progressions:["flag-raises"] },
-      { id:"straddle-flag", name:"STRADDLE HUMAN FLAG", difficulty:7, type:"static", desc:"Ноги врозь.", progressions:["tuck-flag"] },
-      { id:"tuck-planche", name:"TUCK PLANCHE", difficulty:5, type:"static", desc:"Сгруппированная планка.", progressions:["frogstand","elbow-lever"] },
-      { id:"advanced-tuck-planche", name:"ADV. TUCK PLANCHE", difficulty:6, type:"static", desc:"Спина открыта.", progressions:["tuck-planche"] },
-      { id:"straddle-planche", name:"STRADDLE PLANCHE", difficulty:8, type:"static", desc:"Ноги врозь.", progressions:["advanced-tuck-planche"] },
-      { id:"archer-pullup", name:"ARCHER PULL-UP", difficulty:5, type:"dynamic", desc:"Акцент на одну руку.", progressions:["pullup"] },
-      { id:"assisted-oap", name:"ASSISTED OAP", difficulty:7, type:"dynamic", desc:"OAP с помощью.", progressions:["archer-pullup"] },
-      { id:"negative-oap", name:"NEGATIVE OAP", difficulty:7, type:"dynamic", desc:"Медленные негативы.", progressions:["assisted-oap"] },
-      { id:"pseudo-planche-pushup", name:"PSEUDO PLANCHE PUSH-UP", difficulty:6, type:"dynamic", desc:"Отжимания с сильным наклоном.", progressions:[] },
-      { id:"assisted-pistol", name:"ASSISTED PISTOL", difficulty:3, type:"dynamic", desc:"Пистолет с опорой.", progressions:[] },
-      { id:"shrimp-squat", name:"SHRIMP SQUAT", difficulty:4, type:"dynamic", desc:"Креветочный присед.", progressions:[] },
-      { id:"handstand-shoulder-taps", name:"HS SHOULDER TAPS", difficulty:6, type:"dynamic", desc:"Касания плеч в стойке.", progressions:["handstand"] }
-    ];
+function showUpload(id, mode){
+  const area = $('#claim'); if (!area) return;
+  area.innerHTML = `
+    <label class="drop"><input type="file" id="file" accept="image/*,video/*"><span id="drop-t">Выбери фото или видео с элементом</span></label>
+    <div id="prev"></div>
+    <div class="actions">
+      <button class="btn primary" id="confirm" disabled>${mode === 'add' ? 'ДОБАВИТЬ С ПРУФОМ' : 'СОХРАНИТЬ ПРУФ'}</button>
+      ${mode === 'add' ? '<button class="btn" id="noproof">БЕЗ ПРУФА</button>' : ''}
+      <button class="btn ghost" id="cancel">CANCEL</button>
+    </div>
+    <p class="proof-meta" style="margin-top:12px">Пока апрув автоматический. Модерация — в следующих версиях.</p>`;
+  let picked = null, thumb = null;
+  const input = $('#file');
+  input.onchange = async () => {
+    picked = input.files[0]; if (!picked) return;
+    $('#drop-t').textContent = picked.name;
+    $('#confirm').disabled = true;
+    thumb = await makeThumb(picked);
+    $('#prev').innerHTML = thumb ? `<img class="preview" src="${thumb}" alt="">` : '';
+    $('#confirm').disabled = false;
+  };
+  $('#cancel').onclick = () => openModal(id, { keepScroll: true });
+  $('#confirm').onclick = () => {
+    const proof = { type: picked.type.startsWith('video') ? 'video' : 'image', name: picked.name, thumb };
+    commit(id, proof, mode);
+  };
+  const np = $('#noproof'); if (np) np.onclick = () => commit(id, null, 'add');
+}
 
-    const MAIN_IDS = [
-      'pushup','squat','australian-pullup','pullup','chinup','dip','pistol-squat',
-      'lsit','vsit','handstand','hspu','muscleup','bar-muscleup','ring-muscleup',
-      'elbow-lever','backlever','dragonflag','frontlever','humanflag','planche',
-      'oap','one-arm-handstand','fullplanche','maltese','victorian','iron-cross'
-    ];
+function commit(id, proof, mode){
+  const prev = state.owned[id];
+  state.owned[id] = { date: prev ? prev.date : Date.now(), proof };
+  if (!save()){
+    if (proof) proof.thumb = null;
+    if (!save()){ toast('Память браузера забита. Не сохранилось.'); if (prev) state.owned[id] = prev; else delete state.owned[id]; return; }
+    toast('Память почти забита — пруф без превью');
+  } else toast(mode === 'add' ? 'Added to collection' : 'Proof saved');
+  renderAll(); openModal(id, { keepScroll: true });
+}
 
-    // ========== STATE ==========
-    let mastered = JSON.parse(localStorage.getItem('el_mastered') || '[]');
-    let photos = JSON.parse(localStorage.getItem('el_photos') || '{}'); // id -> base64
-    let currentFilter = 'all';
-    let searchQuery = '';
-    let currentModalId = null;
-
-    // ========== DOM ==========
-    const grid = document.getElementById('grid');
-    const collectedCount = document.getElementById('collected-count');
-    const totalMain = document.getElementById('total-main');
-    const modal = document.getElementById('modal');
-    const modalMedia = document.getElementById('modal-media');
-    const modalName = document.getElementById('modal-name');
-    const modalMeta = document.getElementById('modal-meta');
-    const modalDesc = document.getElementById('modal-desc');
-    const progressionList = document.getElementById('progression-list');
-    const modalToggle = document.getElementById('modal-toggle');
-    const searchInput = document.getElementById('search');
-    const photoInput = document.getElementById('photo-input');
-    const btnUpload = document.getElementById('btn-upload');
-    const btnRemovePhoto = document.getElementById('btn-remove-photo');
-    const toastEl = document.getElementById('toast');
-    const onboard = document.getElementById('onboard');
-
-    // ========== HELPERS ==========
-    function toast(msg) {
-      toastEl.textContent = msg;
-      toastEl.classList.add('show');
-      setTimeout(() => toastEl.classList.remove('show'), 2200);
-    }
-
-    function save() {
-      localStorage.setItem('el_mastered', JSON.stringify(mastered));
-      localStorage.setItem('el_photos', JSON.stringify(photos));
-      updateStats();
-    }
-
-    function updateStats() {
-      const mainMastered = mastered.filter(id => MAIN_IDS.includes(id)).length;
-      collectedCount.textContent = mainMastered;
-      totalMain.textContent = MAIN_IDS.length;
-    }
-
-    function getDifficultyLevel(d) {
-      if (d <= 3) return { level: 1, name: 'light', label: 'LIGHT' };
-      if (d <= 6) return { level: 2, name: 'medium', label: 'MEDIUM' };
-      return { level: 3, name: 'hard', label: 'HARD' };
-    }
-
-    function renderDiffCircles(d) {
-      const { level, name, label } = getDifficultyLevel(d);
-      let circles = '';
-      for (let i = 1; i <= 3; i++) {
-        circles += `<div class="diff-circle ${i <= level ? 'filled ' + name : ''}"></div>`;
-      }
-      return `<div class="diff-circles">${circles}<span class="diff-label ${name}">${label}</span></div>`;
-    }
-
-    function isMastered(id) { return mastered.includes(id); }
-
-    function toggleMastered(id) {
-      if (isMastered(id)) {
-        mastered = mastered.filter(x => x !== id);
-        toast('Removed from collection');
-      } else {
-        mastered.push(id);
-        toast('Added to collection');
-      }
-      save();
-      render();
-      if (currentModalId === id) updateModalButton(id);
-    }
-
-    function updateModalButton(id) {
-      if (isMastered(id)) {
-        modalToggle.textContent = 'REMOVE FROM COLLECTION';
-        modalToggle.className = 'btn mastered-btn';
-      } else {
-        modalToggle.textContent = 'ADD TO COLLECTION';
-        modalToggle.className = 'btn primary';
-      }
-    }
-
-    function setModalPhoto(id) {
-      const data = photos[id];
-      const img = modalMedia.querySelector('img');
-      if (data) {
-        if (img) {
-          img.src = data;
-        } else {
-          const newImg = document.createElement('img');
-          newImg.src = data;
-          modalMedia.insertBefore(newImg, modalMedia.firstChild);
-        }
-        modalMedia.classList.add('has-media');
-        btnRemovePhoto.style.display = 'block';
-        btnUpload.textContent = 'CHANGE';
-      } else {
-        if (img) img.remove();
-        modalMedia.classList.remove('has-media');
-        btnRemovePhoto.style.display = 'none';
-        btnUpload.textContent = 'ADD PHOTO';
-      }
-    }
-
-    function openModal(id) {
-      const el = ELEMENTS.find(e => e.id === id);
-      if (!el) return;
-      currentModalId = id;
-
-      modalName.textContent = el.name;
-      modalMeta.innerHTML = `<span>${el.type.toUpperCase()}</span>${renderDiffCircles(el.difficulty)}`;
-      modalDesc.textContent = el.desc;
-      setModalPhoto(id);
-
-      progressionList.innerHTML = '';
-      if (el.progressions && el.progressions.length) {
-        el.progressions.forEach(pid => {
-          const p = ELEMENTS.find(e => e.id === pid);
-          if (!p) return;
-          const div = document.createElement('div');
-          div.className = 'prog-item' + (isMastered(pid) ? ' done' : '');
-          div.innerHTML = `<span>${p.name}</span>${renderDiffCircles(p.difficulty)}`;
-          div.onclick = () => openModal(pid);
-          progressionList.appendChild(div);
-        });
-        document.getElementById('progressions-section').style.display = 'block';
-      } else {
-        document.getElementById('progressions-section').style.display = 'none';
-      }
-
-      updateModalButton(id);
-      modalToggle.onclick = () => toggleMastered(id);
-      modal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      modal.classList.remove('open');
-      currentModalId = null;
-      document.body.style.overflow = '';
-    }
-
-    function render() {
-      let list = ELEMENTS.filter(el => {
-        const isHelper = !MAIN_IDS.includes(el.id);
-        if (isHelper && currentFilter !== 'all' && !searchQuery) return false;
-        if (currentFilter === 'mastered' && !isMastered(el.id)) return false;
-        if (currentFilter === 'locked' && isMastered(el.id)) return false;
-        if (currentFilter === 'static' && el.type !== 'static') return false;
-        if (currentFilter === 'dynamic' && el.type !== 'dynamic') return false;
-        if (searchQuery) {
-          const q = searchQuery.toLowerCase();
-          if (!el.name.toLowerCase().includes(q) && !el.desc.toLowerCase().includes(q)) return false;
-        }
-        return true;
-      });
-
-      if (currentFilter === 'all' && !searchQuery) {
-        list = list.filter(el => MAIN_IDS.includes(el.id));
-      }
-
-      grid.innerHTML = '';
-      if (!list.length) {
-        grid.innerHTML = `<div class="empty-state"><h3>EMPTY</h3><p>Ничего не найдено</p></div>`;
-        return;
-      }
-
-      list.forEach(el => {
-        const hasPhoto = !!photos[el.id];
-        const card = document.createElement('div');
-        card.className = 'card' + (isMastered(el.id) ? ' mastered' : '');
-        card.innerHTML = `
-          <div class="card-media ${hasPhoto ? 'has-media' : ''}" data-id="${el.id}">
-            ${hasPhoto ? `<img src="${photos[el.id]}" alt="">` : ''}
-            <div class="placeholder">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="3" y="5" width="18" height="14" rx="1"/>
-                <circle cx="8.5" cy="10.5" r="1.5"/>
-                <path d="M21 15l-5-5L5 19"/>
-              </svg>
-              PHOTO
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-header">
-              <div class="card-name">${el.name}</div>
-              ${renderDiffCircles(el.difficulty)}
-            </div>
-            <div class="card-meta">
-              <span>${el.type}</span>
-              ${isMastered(el.id) ? '<span class="mastered-badge">● MASTERED</span>' : ''}
-            </div>
-            <div class="card-desc">${el.desc}</div>
-            <div class="card-actions">
-              <button class="btn ${isMastered(el.id) ? 'mastered-btn' : 'primary'}" data-action="toggle" data-id="${el.id}">
-                ${isMastered(el.id) ? 'MASTERED' : 'ADD'}
-              </button>
-              <button class="btn ghost" data-action="info" data-id="${el.id}">INFO</button>
-            </div>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-
-      grid.querySelectorAll('[data-action="toggle"]').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          toggleMastered(btn.dataset.id);
-        });
-      });
-      grid.querySelectorAll('[data-action="info"]').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          openModal(btn.dataset.id);
-        });
-      });
-      grid.querySelectorAll('.card-media').forEach(media => {
-        media.addEventListener('click', () => openModal(media.dataset.id));
-      });
-    }
-
-    // ========== PHOTO UPLOAD ==========
-    btnUpload.addEventListener('click', () => photoInput.click());
-    btnRemovePhoto.addEventListener('click', () => {
-      if (!currentModalId) return;
-      delete photos[currentModalId];
-      save();
-      setModalPhoto(currentModalId);
-      render();
-      toast('Photo removed');
-    });
-
-    photoInput.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (!file || !currentModalId) return;
-      if (file.size > 1.5 * 1024 * 1024) {
-        toast('Max 1.5MB. Compress the photo.');
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = ev => {
-        // compress a bit via canvas
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const maxW = 800;
-          const scale = Math.min(1, maxW / img.width);
-          canvas.width = img.width * scale;
-          canvas.height = img.height * scale;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          const data = canvas.toDataURL('image/jpeg', 0.72);
-          photos[currentModalId] = data;
-          save();
-          setModalPhoto(currentModalId);
-          render();
-          toast('Photo saved');
-        };
-        img.src = ev.target.result;
-      };
-      reader.readAsDataURL(file);
-      photoInput.value = '';
-    });
-
-    // ========== EXPORT ==========
-    document.getElementById('btn-export').addEventListener('click', () => {
-      const data = {
-        collected: mastered,
-        count: mastered.length,
-        exportedAt: new Date().toISOString()
-      };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `elements-collection-${Date.now()}.json`;
-      a.click();
+/* превью из фото или кадра видео, максимум 640px */
+function makeThumb(file){
+  return new Promise(resolve => {
+    const url = URL.createObjectURL(file);
+    const draw = (src, w, h) => {
+      const k = Math.min(1, 640 / Math.max(w, h));
+      const c = document.createElement('canvas');
+      c.width = Math.round(w * k); c.height = Math.round(h * k);
+      c.getContext('2d').drawImage(src, 0, 0, c.width, c.height);
       URL.revokeObjectURL(url);
-      toast('Collection exported');
-    });
-
-    // ========== FILTERS & SEARCH ==========
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        render();
-      });
-    });
-
-    searchInput.addEventListener('input', e => {
-      searchQuery = e.target.value.trim();
-      render();
-    });
-
-    document.getElementById('modal-close').addEventListener('click', closeModal);
-    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-    // ========== ONBOARDING ==========
-    if (!localStorage.getItem('el_onboarded')) {
-      onboard.classList.add('open');
+      resolve(c.toDataURL('image/jpeg', .72));
+    };
+    if (file.type.startsWith('image')){
+      const img = new Image();
+      img.onload = () => draw(img, img.naturalWidth, img.naturalHeight);
+      img.onerror = () => resolve(null);
+      img.src = url;
+    } else {
+      const v = document.createElement('video');
+      v.muted = true; v.playsInline = true; v.preload = 'auto'; v.src = url;
+      v.onloadeddata = () => { v.currentTime = Math.min(.5, (v.duration || 1) / 2); };
+      v.onseeked = () => draw(v, v.videoWidth, v.videoHeight);
+      v.onerror = () => resolve(null);
+      setTimeout(() => resolve(null), 6000);
     }
-    document.getElementById('onboard-start').addEventListener('click', () => {
-      localStorage.setItem('el_onboarded', '1');
-      onboard.classList.remove('open');
-    });
+  });
+}
 
-    // ========== INIT ==========
-    updateStats();
-    render();
-
-    // ========== PWA ==========
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
+/* ---------- events ---------- */
+document.addEventListener('click', ev => {
+  const t = ev.target;
+  if (t === modal) return closeModal();
+  const a = t.closest('[data-act]');
+  if (a){
+    const act = a.dataset.act, id = a.dataset.id;
+    if (act === 'open') return openModal(id);
+    if (act === 'add') return openModal(id, { add: true });
+    if (act === 'close') return closeModal();
+    if (act === 'start-add') return showUpload(currentId, 'add');
+    if (act === 'replace') return showUpload(currentId, 'proof');
+    if (act === 'remove'){
+      if (confirm('Убрать элемент из коллекции?')){ delete state.owned[currentId]; save(); renderAll(); toast('Removed'); openModal(currentId, { keepScroll: true }); }
+      return;
     }
-  </script>
+  }
+  const g = t.closest('[data-group]'); if (g){ fGroup = g.dataset.group; renderFilters(); renderGrid(); return; }
+  const ty = t.closest('[data-type]'); if (ty){ fType = fType === ty.dataset.type ? 'all' : ty.dataset.type; renderFilters(); renderGrid(); return; }
+  const s = t.closest('[data-st]'); if (s){ fStatus = s.dataset.st; renderFilters(); renderGrid(); return; }
+  if (t.closest('[data-steps]')){ showSteps = !showSteps; renderFilters(); renderGrid(); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+$('#search').addEventListener('input', e => { query = e.target.value.trim(); renderGrid(); });
+$('#reset').onclick = () => { if (confirm('Стереть всю коллекцию?')){ state = { owned:{} }; save(); renderAll(); toast('Collection reset'); } };
+
+/* ---------- onboarding ---------- */
+if (!localStorage.getItem('elements.onboarded') && !localStorage.getItem('el_onboarded')) $('#onboard').classList.add('open');
+$('#onboard-start').onclick = () => { localStorage.setItem('elements.onboarded', '1'); $('#onboard').classList.remove('open'); };
+
+/* ---------- init ---------- */
+renderAll();
+
+/* шапка прячется при скролле вниз */
+(function(){
+  const bar = $('#topbar'); let last = 0;
+  addEventListener('scroll', () => {
+    const y = scrollY;
+    bar.classList.toggle('hide', y > last && y > 140 && !modal.classList.contains('open'));
+    last = y;
+  }, { passive: true });
+})();
+
+/* ELEMENTS ровно во всю ширину */
+function fitHero(){
+  const el = $('#hero-title'), w = el.parentElement.clientWidth;
+  el.style.fontSize = '100px';
+  const k = w / el.getBoundingClientRect().width;
+  if (isFinite(k) && k > 0) el.style.fontSize = Math.floor(100 * k) + 'px';
+}
+fitHero();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHero);
+addEventListener('resize', fitHero);
+
+/* ---------- PWA ---------- */
+if ('serviceWorker' in navigator) window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
+</script>
 </body>
 </html>
